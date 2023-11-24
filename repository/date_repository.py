@@ -1,3 +1,5 @@
+#Repository: time repository, 
+
 from dbo.data_base import Data_Base
 from models.superpy_time import SuperpyTime #importiamo la classe
 import datetime as dt
@@ -8,4 +10,5 @@ class Time_repository: #il tempo e uguale per tutti quindi facciamo la classe st
     
     def get_current_time(self):
         time = Data_Base.loadtimeDB()
-        self.superpy_time = SuperpyTime(time[0]) #qua riscriviamo la data dell'excell, e usa la concezione di tempo
+        for t in time:
+            self.superpy_time = SuperpyTime(t[0]) #qua riscriviamo la data dell'excell, e usa la concezione di tempo

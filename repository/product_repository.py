@@ -1,3 +1,5 @@
+#Repository: product repository, i load here my database and with the data imported I build a list
+
 from dbo.data_base import Data_Base
 from models.product import Product #importiamo la classe
 

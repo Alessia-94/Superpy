@@ -1,3 +1,5 @@
+#Data_base: this is the class data_base.
+
 import csv
 
 class Data_Base:
@@ -5,12 +7,14 @@ class Data_Base:
     profit_table = "profit.csv"
     product_table = "product.csv"
 
+#static class, The data_base is only one and it load the datas, indipendendly from which sort of data.
+
     @staticmethod
     def loadtimeDB():
-        f = open(Data_Base.time_table, "r")
-        csv_file = csv.reader(f, delimiter=",") #f csv e il modulo che stiamo importando, reader e un metodo del modulo, restituisce un lettore del file, restituisce il puntatore del file. formatta e prende i valori separatamente per , f e il file proprio 
-        next(csv_file) 
-        return csv_file #il puntatore ppunta alla riga successiva no header
+        f = open(Data_Base.time_table, "r") # we indicate where is the file, and that we need to only read the data
+        csv_file = csv.reader(f, delimiter=",") # we use the method csv to read the data as a string and delimite the data with a comma
+        next(csv_file) # we skip the first line of the csv file (headers)
+        return csv_file 
     
     @staticmethod   
     def loadprofitDB():
@@ -26,7 +30,3 @@ class Data_Base:
         next(csv_file) 
         return csv_file
 
-
-        #METODO statico, l-annotation il metodo deve comportarsi in modo. istanziamo il prodoctto come latte, metodo prezzo. metodo statico, va al di la dell'istanzazione, da sempre la stessa informazione. istanza della classe statica e uguale per tutti.
-        # data base, solo uno carica i dati, indipendemente dai dati. ogni repositori chiamera il database. tutti quanti vedono gli stessi dati.
-        # f riferisce lapertura del file a una variabile. ci riferiamo alla classe, e prendiamo il valore statico

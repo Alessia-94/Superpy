@@ -22,13 +22,14 @@ class Product_controller:
             product: Product
             profit = self.profit_controller.get_profit_by_type(product.product_type) 
             product.set_profit(profit)
+            product.compute_selling_price()
             product.compute_expiration(self.date_controller.get_current_date())
             product.compute_on_sale(self.date_controller.get_current_date())
 
     def test_product(self):
         for p in self.products:
             p: Product
-            print(p.product_name + " " + p.product_selling_price + " " + p.product_expired)
+            print (str(p.product_name) + " " + str(p.product_selling_price) + " " + str(p.product_expired))
 
         
         
