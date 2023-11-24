@@ -1,5 +1,5 @@
 from dbo.data_base import Data_Base
-from ..models.profit import Profit #importiamo la classe
+from models.profit import Profit #importiamo la classe
 class Profit_repository:
 
     profit_table = dict()

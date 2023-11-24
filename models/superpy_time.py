@@ -1,7 +1,11 @@
 import datetime as dt
 class SuperpyTime:
     def __init__(self, current_date):
-        self.current_date = dt.datetime.strptime(current_date, "%Y-%m-%d")
+        if current_date not in (None, ""): #check se la stringa e vuota
+            self.current_date = dt.datetime.strptime(current_date, "%Y-%m-%d")
+        else:
+            self.current_date = None
+#data aquisto, e scadenza note. La data di vendita non e nota. Se il prodotto non e venduto la impostiamo come None.
     
     def current_date_gt (self, date_to_check):
         return self.current_date > date_to_check
