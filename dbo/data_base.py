@@ -1,11 +1,13 @@
 #Data_base: this is the class data_base.
-
+# controlla product table e table handler
 import csv
+from models.product import Product
 
 class Data_Base:
-    time_table = "date.csv"
-    profit_table = "profit.csv"
-    product_table = "product.csv"
+    time_table = "dbo/date.csv"
+    profit_table = "dbo/profit.csv"
+    product_table = "dbo/product.csv" #....
+    product_table_header = None #.....
 
 #static class, The data_base is only one and it load the datas, indipendendly from which sort of data.
 
@@ -13,7 +15,7 @@ class Data_Base:
     def loadtimeDB():
         f = open(Data_Base.time_table, "r") # we indicate where is the file, and that we need to only read the data
         csv_file = csv.reader(f, delimiter=",") # we use the method csv to read the data as a string and delimite the data with a comma
-        next(csv_file) # we skip the first line of the csv file (headers)
+        Data_Base.time_table_header = next(csv_file) # we skip the first line of the csv file (headers)
         return csv_file 
     
     @staticmethod   
@@ -26,7 +28,39 @@ class Data_Base:
     @staticmethod   
     def loadproductDB():
         f = open(Data_Base.product_table, "r")
-        csv_file = csv.reader(f, delimiter=",")
-        next(csv_file) 
+        csv_file = csv.reader(f, delimiter=',')
+        Data_Base.product_table_header = next(csv_file)
         return csv_file
 
+# here we have to "re-write" the new date calculated in the date_controller in case we retrieve/advance in time
+    @staticmethod
+    def savetimeDB(value):
+        f = open(Data_Base.time_table, "w+", newline="")
+        csv_file = csv.writer(f, delimiter=",")
+        header = ["DATE"]
+        row_value = [value]
+        csv_file.writerow(Data_Base.time_table_header)
+        csv_file.writerow(row_value)
+
+#....
+
+    @staticmethod
+    def saveproductDB(products):
+        f = open(Data_Base.product_table, "w+", newline="")
+        csv_file = csv.writer(f, delimiter=",")
+        csv_file.writerow(Data_Base.product_table_header)
+        for p in products:
+            p: Product
+            row_value = p.get_product_as_row()
+            csv_file.writerow(row_value)
+#....    
+    @staticmethod
+    def exprotProducts(products, file_name):
+        file_name = "export/" + file_name
+        f = open(file_name, "w+", newline="")
+        csv_file = csv.writer(f, delimiter=",")
+        csv_file.writerow(Data_Base.product_table_header)
+        for p in products:
+            p: Product
+            row_value = p.get_product_as_row()
+            csv_file.writerow(row_value)
