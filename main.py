@@ -2,6 +2,7 @@
 import argparse
 import csv
 import datetime as dt
+from controllers.profit_controller import Profit_controller
 from controllers.product_controller import Product_controller
 from controllers.date_controller import Date_controller
 from models.product import Product 
@@ -18,6 +19,7 @@ __human_name__ = "superpy"
 # Your code below this line.
 pr = Product_controller()
 dr = Date_controller()
+pc = Profit_controller()
 console = Console()
 
 
@@ -45,6 +47,7 @@ def main():
     parser.add_argument('-ps', '--plot_sold', help='Plot products sold by date range ex. 2023-10-01/2023-11-01')
     parser.add_argument('-pb', '--plot_bought', help='Plot products bought by date range ex. 2023-10-01/2023-11-01')
     parser.add_argument('-bp', '--buy_product', nargs='+', help='Buy a product Name Type Price Expiration(2023-12-01)')
+    parser.add_argument('-ip', '--insert_profit', nargs='+', help='Insert or update profit Type Profit')
     parser.add_argument('-pt', '--product_table', help='Print product table', action='store_true')
     parser.add_argument('-os', '--on_sale', help='Print on sale products list', action='store_true')
     parser.add_argument('-lsd', '--list_sold_date', help='Print all sold products in date range ex. 2023-10-01/2023-11-01')
@@ -74,7 +77,7 @@ def main():
     elif args.list_sold:
         all_sold_products()
     elif args.buy_product:
-        print_products(pr.buy_new_product(args.buy_product))
+        print_products(pr.buy_new_product(args.buy_product), "products")
     elif args.profit_revenue:
         dates: str = args.profit_revenue
         date1 = dates.split("/")[0]
@@ -93,12 +96,12 @@ def main():
         elif export_command == "a" or export_command == "A":
             console.print("[cyan]Export done in file:[/cyan] [green]" + pr.export_available_products() + "[/green]")
     elif args.plot_sold:
-        dates: str = args.plot
+        dates: str = args.plot_sold
         date1 = dates.split("/")[0]
         date2 = dates.split("/")[1]
         plot_sold(date1, date2)
     elif args.plot_bought:
-        dates: str = args.plot
+        dates: str = args.plot_bought
         date1 = dates.split("/")[0]
         date2 = dates.split("/")[1]
         plot_bought(date1, date2)
@@ -117,7 +120,9 @@ def main():
         date2 = dates.split("/")[1]
         print_products(pr.get_all_bought_products_in_time_range(date1, date2))
     elif args.list_number_product:
-        print_products(pr.get_all_products_by_name(args.list_number_product))
+        print_products(pr.get_all_products_by_name(args.list_number_product), "amount")
+    elif args.insert_profit:
+        console.print("[cyan]" + pc.insert_new_profit(args.insert_profit).type + " inserted [/cyan]")
         
 def print_products(products, t):
     table = Table(title="[cyan]Overview products " + t + " at date[/cyan] [green]" + render_date(dr.get_current_date().current_date) + "[/green]")

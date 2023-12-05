@@ -5,4 +5,7 @@ class Profit:
         self.id = id
         self.type = type
         self.profit = float(profit) 
+
+    def get_profit_as_row(self):
+        return[self.id, self.type, self.profit]
         

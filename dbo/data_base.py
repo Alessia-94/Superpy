@@ -1,12 +1,15 @@
 #Data_base: this is the class data_base.
 import csv
 from models.product import Product
+from models.profit import Profit
 
 class Data_Base:
     time_table = "dbo/date.csv"
     profit_table = "dbo/profit.csv"
     product_table = "dbo/product.csv" #....
     product_table_header = None #.....
+    time_table_header = None
+    profit_table_header = None #la prima riga della csv , non ha valori, poi lo asseniamo quando leggiamo i file
 
 #static class, The data_base is only one and it load the datas, indipendendly from which sort of data.
 
@@ -21,7 +24,7 @@ class Data_Base:
     def loadprofitDB():
         f = open(Data_Base.profit_table, "r")
         csv_file = csv.reader(f, delimiter=",")
-        next(csv_file) 
+        Data_Base.profit_table_header = next(csv_file) 
         return csv_file
     
     @staticmethod   
@@ -36,7 +39,6 @@ class Data_Base:
     def savetimeDB(value):
         f = open(Data_Base.time_table, "w+", newline="")
         csv_file = csv.writer(f, delimiter=",")
-        header = ["DATE"]
         row_value = [value]
         csv_file.writerow(Data_Base.time_table_header)
         csv_file.writerow(row_value)
@@ -62,4 +64,14 @@ class Data_Base:
         for p in products:
             p: Product
             row_value = p.get_product_as_row()
+            csv_file.writerow(row_value)
+
+    @staticmethod
+    def saveprofitDB (profits):
+        f = open(Data_Base.profit_table, "w+", newline="")
+        csv_file = csv.writer(f, delimiter=",")
+        csv_file.writerow(Data_Base.profit_table_header)
+        for p in profits:
+            p: Profit
+            row_value = p.get_profit_as_row()
             csv_file.writerow(row_value)

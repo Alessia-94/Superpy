@@ -125,7 +125,7 @@ class Product_controller:
             if(p.product_sold):
                 results.append(p)
         return results
-    
+
     def get_all_on_sale_products(self):
         results = list()
         for p in self.get_real_time_product_list():
@@ -153,7 +153,7 @@ class Product_controller:
         if(type(t2) == str): t2 = SuperpyTime(t2)
         if(type(t1) == datetime.datetime): t1 = SuperpyTime(datetime.datetime.strftime(t1, "%Y-%m-%d"))
         if(type(t2) == datetime.datetime): t2 = SuperpyTime(datetime.datetime.strftime(t2, "%Y-%m-%d"))
-        bought_products = self.get_all_bought_products_in_time_range()
+        bought_products = self.products
         for p in bought_products:
             p: Product
             if(p.product_buy_date.current_date_gte(t1) and p.product_buy_date.current_date_lte(t2)):
@@ -211,6 +211,7 @@ class Product_controller:
         buy_date = datetime.datetime.strftime(datetime.datetime.today(), "%Y-%m-%d")
         p = Product(new_id, params[1], params[0], buy_date, params[2], 0, None, params[3], 0, 0, 0)
         self.products.append(p)
+        self.enrich_products()
         self.save_all_products()
         return p
     
