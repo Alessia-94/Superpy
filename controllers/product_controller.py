@@ -108,7 +108,7 @@ class Product_controller:
             p: Product
             if(not p.product_sold):
                 p.sell_product(self.date_controller.get_current_date())
-                return "[green]" + p.product_name + " sold in date: " + p.product_sell_date + "[/green] [blue]at this price: " + p.product_selling_price + "[/blue]" 
+                return "[green]" + p.product_name + " sold in date: " + str(p.product_sell_date) + "[/green] [blue]at this price: " + str(p.product_selling_price) + "[/blue]" 
         return "[red]" + product_name + " OUT OF ORDER[/red]"
 
 # list of all the product available (not case sensitive)   
@@ -228,3 +228,4 @@ class Product_controller:
         for p in self.products:
             p: Product
             print (str(p.product_name) + " " + str(p.product_selling_price) + " " + str(p.product_expired))
+

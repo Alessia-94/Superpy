@@ -117,14 +117,14 @@ def main():
         dates = args.list_bought_date
         date1 = dates.split("/")[0]
         date2 = dates.split("/")[1]
-        print_products(pr.get_all_bought_products_in_time_range(date1, date2))
+        print_products(pr.get_all_bought_products_in_time_range(date1, date2), "bought")
     elif args.list_number_product:
         print_products(pr.get_all_products_by_name(args.list_number_product), "amount")
     elif args.insert_profit:
         console.print("[cyan]" + pc.insert_new_profit(args.insert_profit).type + " inserted [/cyan]")
 
 # In this method I build the table that is used to display the results. To build the table I used the module Rich      
-def print_products(products, t):
+def print_products(products, t,):
     table = Table(title="[cyan]Overview products " + t + " at date[/cyan] [green]" + render_date(dr.get_current_date().current_date) + "[/green]")
     table.add_column("Product", justify="right", style="cyan", no_wrap=True)
     table.add_column("Type", style="green")   
