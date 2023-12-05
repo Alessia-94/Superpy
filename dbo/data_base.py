@@ -1,5 +1,4 @@
 #Data_base: this is the class data_base.
-# controlla product table e table handler
 import csv
 from models.product import Product
 

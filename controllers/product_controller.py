@@ -36,11 +36,19 @@ class Product_controller:
  # Product list
     def get_product_list(self):
         return self.products
+    
+    def get_real_time_product_list(self):
+        results = list()
+        for p in self.products:
+            p: Product
+            if self.date_controller.get_current_date().current_date_gte(p.product_buy_date):
+                results.append(p)
+        return results
 
 # I loop the list of the product. If product type is equal to type, add it to the list
     def get_product_list_by_type(self, type):
         results = list()
-        for p in self.products:
+        for p in self.get_real_time_product_list():
             p: Product
             if p.product_type == type:
                 results.append(p)
@@ -49,7 +57,7 @@ class Product_controller:
 #List of all the products not sold. If a product has not been sold and is not expired, add it to the list     
     def get_available_product_list_with_expiring_date(self):
         results = list()
-        for p in self.products:
+        for p in self.get_real_time_product_list():
             p: Product
             if not p.product_sold and not p.product_expired:
                 results.append(p)
@@ -58,7 +66,7 @@ class Product_controller:
 #List of all the products not sold. If a product has not been sold and is not expired, add it to the list     
     def get_available_product_list(self):
         results = list()
-        for p in self.products:
+        for p in self.get_real_time_product_list():
             p: Product
             if not p.product_sold and not p.product_expired:
                 results.append(p)
@@ -67,7 +75,7 @@ class Product_controller:
 # list of all the product not sold.     
     def get_all_available_or_expired(self):
         results = list()
-        for p in self.products:
+        for p in self.get_real_time_product_list():
             p: Product
             if not p.product_sold:
                 results.append(p)
@@ -75,7 +83,7 @@ class Product_controller:
         
     def get_all_expired_products(self):
         results = list()
-        for p in self.products:
+        for p in self.get_real_time_product_list():
             p: Product
             if(p.product_expired):
                 results.append(p)
@@ -85,7 +93,7 @@ class Product_controller:
 
     def get_all_products_by_name(self, product_name):
         results = list()
-        for p in self.products:
+        for p in self.get_real_time_product_list():
             p:Product
             if(str.upper(p.product_name) == str.upper(product_name)):
                 results.append(p)
@@ -94,18 +102,17 @@ class Product_controller:
     def sell_product_by_name(self, product_name):
         products = self.get_all_available_products_by_name(product_name)
         if(len(products) < 1):
-            print(product_name + " NOT FOUND")
-            return
+            return "[red]" + product_name + " NOT FOUND[/red]"
         for p in products:
             p: Product
             if(not p.product_sold):
                 p.sell_product(self.date_controller.get_current_date())
-                return
-        print(product_name + " OUT OF ORDER") 
+                return "[green]" + p.product_name + " sold in date: " + p.product_sell_date + "[/green] [blue]at this price: " + p.product_selling_price + "[/blue]" 
+        return "[red]" + product_name + " OUT OF ORDER[/red]"
 
     def get_all_available_products_by_name(self, product_name):
         results = list()
-        for p in self.products:
+        for p in self.get_real_time_product_list():
             p: Product
             if((str.upper(p.product_name) == str.upper(product_name)) and (not p.product_expired)):
                 results.append(p)
@@ -113,9 +120,17 @@ class Product_controller:
 
     def get_all_sold_products(self):
         results = list()
-        for p in self.products:
+        for p in self.get_real_time_product_list():
             p: Product
             if(p.product_sold):
+                results.append(p)
+        return results
+    
+    def get_all_on_sale_products(self):
+        results = list()
+        for p in self.get_real_time_product_list():
+            p: Product
+            if(p.product_onsale and not p.product_expired):
                 results.append(p)
         return results
 
@@ -129,6 +144,19 @@ class Product_controller:
         for p in sold_products:
             p: Product
             if(p.product_sell_date.current_date_gte(t1) and p.product_sell_date.current_date_lte(t2)):
+                results.append(p)
+        return results
+    
+    def get_all_bought_products_in_time_range(self, t1, t2):
+        results = list()
+        if(type(t1) == str): t1 = SuperpyTime(t1)
+        if(type(t2) == str): t2 = SuperpyTime(t2)
+        if(type(t1) == datetime.datetime): t1 = SuperpyTime(datetime.datetime.strftime(t1, "%Y-%m-%d"))
+        if(type(t2) == datetime.datetime): t2 = SuperpyTime(datetime.datetime.strftime(t2, "%Y-%m-%d"))
+        bought_products = self.get_all_bought_products_in_time_range()
+        for p in bought_products:
+            p: Product
+            if(p.product_buy_date.current_date_gte(t1) and p.product_buy_date.current_date_lte(t2)):
                 results.append(p)
         return results
         
