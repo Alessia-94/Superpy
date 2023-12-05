@@ -1,4 +1,4 @@
-#Date controller
+#Date controller: here we do all the "changes" of time: advance or go back in time, reset time ect.
 
 from repository.date_repository import Time_repository
 from models.superpy_time import SuperpyTime
@@ -10,21 +10,24 @@ class Date_controller:
     
     def get_current_date(self):
         return self.time_repository.get_current_time()
-# here I write two method which allows the advancing and retreat of the time, by adding or removing specific numbers of date set in the main.file
+    
+# here I write methods which allows the advancing, retreat of the time, by adding or removing specific numbers of days
     def advance_days(self, d):
-        today: SuperpyTime = self.time_repository.get_current_time()# data che sta nel cvs nel repositoru
-        today.current_date += dt.timedelta(days=d) # aggiunta dei gg
-        self.time_repository.set_current_time(today)# qui lo saviamo csv set current time nel reposity 
+        today: SuperpyTime = self.time_repository.get_current_time()# data that is in the csv
+        today.current_date += dt.timedelta(days=d) # add xx days
+        self.time_repository.set_current_time(today)# I save here the new data in the time repository
 
     def retreat_days(self, d):
         today: SuperpyTime = self.time_repository.get_current_time()
         today.current_date -= dt.timedelta(days=d)
         self.time_repository.set_current_time(today)
 
+# this method allows to reset the time to the current real date.
     def reset_time_to_today(self):
         today = SuperpyTime(dt.date.today().strftime("%Y-%m-%d")) #ogni cosa con set viene riscritto
         self.time_repository.set_current_time(today)
 
+# function utility: I used to "plot" my graphic using the module Matplot: it gives an array of value in a specific time range
     def get_time_array_in_time_range(self, date1, date2):
         delta = dt.timedelta(days=1)
         date1 = dt.datetime.strptime(date1, "%Y-%m-%d")

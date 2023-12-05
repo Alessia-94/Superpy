@@ -5,11 +5,11 @@ from .superpy_time import SuperpyTime
 import datetime as dt
 
 '''In the product class I imported also the profit class, and I defined as characteristic of the product
-sel.profit: Profit = None --> this initialised the Profit from the profit class (model --> profit). 
-We take only the scheme of the class, the class itself is empty. We will fill it in the controller
+self.profit: Profit = None --> this initialised the Profit from the profit class (model --> profit). 
+I take only the scheme of the class, the class itself is empty. i will fill it in the controller
 
-self.product_buy_date and self.product_expiration_date = we instantiate it with SuperpyTime that trasform the string into data, in this way we can
-use all the method of the SuperpyTime class'''
+Superpy class: product_buy_date, product_sell_date and product_expiration_date = I instantiate them with SuperpyTime that trasform the string into data, in this way I can
+use all the methods of the SuperpyTime class'''
 
 class Product:
 
@@ -40,22 +40,20 @@ class Product:
             self.product_selling_price * 0.5 
 
 #To compute the expiration date I need to import Superpytime because it has the date not as text but already converted in date. By importing it I can also use its method (for example "current_date_lt")
-#if the expired date is greater than the date you are passing me = True, else product expired (false)
-
     def compute_expiration(self, current_time): 
         if self.product_expiration_date.current_date_lt(current_time):
             self.product_expired = True
         else:
             self.product_expired = False
 
-#To compute the on_sale, we assign to the field " self.product_onsale" False. If it pass all the "checks" of the second if: if it is not expired AND are missing 3 days to the expired date, it becomes true
-
+#To compute the on_sale, I assign to the field " self.product_onsale" False. If it pass all the "checks" of the second if: if it is not expired AND are missing 3 days to the expired date, it becomes true
     def compute_on_sale(self, current_time):
         self.product_onsale = False 
         if self.product_expiration_date.current_date_lt(current_time):
             if self.product_expiration_date.time_delta(current_time) <= 3: #3 gg scadenza
                 self.product_onsale = True
-#calculations:....
+
+#Here I continue to compute data (indicated as name of the methods) that are not directly given by the database of the products)
     def get_product_buy_date_as_string(self):
         if(self.product_buy_date is None or self.product_buy_date.current_date is None): return ""
         return dt.datetime.strftime(self.product_buy_date.current_date, "%Y-%m-%d")

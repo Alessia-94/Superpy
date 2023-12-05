@@ -23,14 +23,14 @@ pc = Profit_controller()
 console = Console()
 
 
-'''Argparse is a method that help the user to interface the program 
-in an easy way. Through the use of comand, we can do some operations and get results. 
+'''Argparse is a module that help the user to interface the program 
+in an easy way. Through the use of comand, the user can do some operations and get results. 
 Using the "If" construction I can associate a command to an operation
 
 CONSTRUCTION: 
-- we define the command using parse.add_argument --> parser.add_argument(abbreviation argument "-l", complete argument "--list", explanation, action="store_time")
-- in the def, i print what I want the command to show to the user
-- using the if (if args.) structure I associate the command to the corresponding compute'''
+- I define the command using parse.add_argument --> parser.add_argument(abbreviation argument "-l", complete argument "--list", explanation, action="store_time")
+- in the method associated, I print what I want the command to show to the user
+- using the if (if args.) structure I associate the command to the corresponding compute. More specifically I use the elif structure to be sure that it will run only one command'''
 
 def main():
     parser = argparse.ArgumentParser(prog="Superpy", description="Superpy Program", epilog="Thanks for using Superpy")
@@ -53,7 +53,6 @@ def main():
     parser.add_argument('-lsd', '--list_sold_date', help='Print all sold products in date range ex. 2023-10-01/2023-11-01')
     parser.add_argument('-lbd', '--list_bought_date', help='Print all bought products in date range ex. 2023-10-01/2023-11-01')
     parser.add_argument('-lnp', '--list_number_product', help='Print available products by product name')
-    #check -hulp text
     args = parser.parse_args()
     
     if args.list: 
@@ -63,10 +62,10 @@ def main():
     elif args.expired: 
         all_expired_products()
     elif args.advance_days: 
-        dr.advance_days(int(args.advance_days)) #check se ci sta e se ce esegui
+        dr.advance_days(int(args.advance_days)) 
         print_today()
     elif args.retreat_days: 
-        dr.retreat_days(int(args.retreat_days)) #check se ci sta e se ce esegui
+        dr.retreat_days(int(args.retreat_days)) 
         print_today()
     elif args.reset_time:
         dr.reset_time_to_today()
@@ -123,7 +122,8 @@ def main():
         print_products(pr.get_all_products_by_name(args.list_number_product), "amount")
     elif args.insert_profit:
         console.print("[cyan]" + pc.insert_new_profit(args.insert_profit).type + " inserted [/cyan]")
-        
+
+# In this method I build the table that is used to display the results. To build the table I used the module Rich      
 def print_products(products, t):
     table = Table(title="[cyan]Overview products " + t + " at date[/cyan] [green]" + render_date(dr.get_current_date().current_date) + "[/green]")
     table.add_column("Product", justify="right", style="cyan", no_wrap=True)
@@ -180,6 +180,7 @@ def revenue_in_time_range(date1, date2):
     revenue = pr.calculate_revenue_in_time_range(date1,date2)
     console.print("Revenue between " + date1 + " and " + date2 + " [green]" + str(round(revenue, 2)) + "[/green]", style="bold green")
 
+# In this method I prepare all the data that needs to be displayed in my graphs of sold and bought product. To do so I will used Matplot module
 def plot_sold(date1, date2):
     dates = dr.get_time_array_in_time_range(date1, date2)
     products_s = list()
@@ -200,6 +201,7 @@ def plot_bought(date1, date2):
         dates_s.append(str(d.day) + "/" + str(d.month))
     plot_data(dates_s, products_s)
 
+# In this method I build the graph to plot the bought and sold products. To do so I use the module Matplot
 def plot_data(x, y):
     plt.style.use("ggplot")
     plt.title("Sold products by date in time range" + x[0] + " - " + x[len(x)-1])
