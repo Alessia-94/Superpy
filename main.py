@@ -76,7 +76,7 @@ def main():
     elif args.list_sold:
         all_sold_products()
     elif args.buy_product:
-        print_products(pr.buy_new_product(args.buy_product), "products")
+        print_products(pr.buy_new_product(args.buy_product), "new bought products")
     elif args.profit_revenue:
         dates: str = args.profit_revenue
         date1 = dates.split("/")[0]
@@ -107,7 +107,7 @@ def main():
     elif args.product_table:
         print_products(pr.get_real_time_product_list(), "table")
     elif args.on_sale:
-        print_products(pr.get_all_on_sale_products(), "on sale")
+        print_products(pr.get_all_on_sale_products(), "on sale") #this needs to still checked.
     elif args.list_sold_date:
         dates = args.list_sold_date
         date1 = dates.split("/")[0]

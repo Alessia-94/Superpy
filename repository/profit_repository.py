@@ -16,7 +16,7 @@ class Profit_repository:
 
 # Here I indicate which command the database has to do: load the profit from the database and save the new updated profit in the database    
     def load_profit(self):
-        profits = Data_Base.loadprofitDB() # here we indicate the pointer to the file
+        profits = Data_Base.loadprofitDB() 
         self.profit_table.clear()
         for line in profits:
             self.profit_table [line[1]] = Profit(line[0], line[1], line[2]) 

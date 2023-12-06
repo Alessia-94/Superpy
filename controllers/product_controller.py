@@ -90,7 +90,7 @@ class Product_controller:
                 results.append(p)
         return results
 
-# list of all the product by name (not case sensitive)      
+# list of all the product by name (amount) (not case sensitive)      
     def get_all_products_by_name(self, product_name):
         results = list()
         for p in self.get_real_time_product_list():
@@ -129,7 +129,7 @@ class Product_controller:
                 results.append(p)
         return results
 
-# list of all the product on sale 
+# list of all the product on sale --> needs to be checked
     def get_all_on_sale_products(self):
         results = list()
         for p in self.get_real_time_product_list():
@@ -217,7 +217,7 @@ class Product_controller:
 # method to interact with the product list. In this case I can add a new product to the list of the supermarket, and I build its structure to insert its characteristics (ID, Name, Type, buy date etc..)  
     def buy_new_product(self, params):
         new_id = self.product_repository.get_max_id()
-        buy_date = datetime.datetime.strftime(datetime.datetime.today(), "%Y-%m-%d")
+        buy_date = datetime.datetime.strftime(self.date_controller.get_current_date().current_date, "%Y-%m-%d")
         p = Product(new_id, params[1], params[0], buy_date, params[2], 0, None, params[3], 0, 0, 0)
         self.products.append(p)
         self.enrich_products()

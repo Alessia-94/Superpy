@@ -16,9 +16,9 @@ class Data_Base:
 
     @staticmethod
     def loadtimeDB():
-        f = open(Data_Base.time_table, "r") # we indicate where is the file, and that we need to only read the data
-        csv_file = csv.reader(f, delimiter=",") # we use the method csv to read the data as a string and delimite the data with a comma
-        Data_Base.time_table_header = next(csv_file) # we skip the first line of the csv file (headers)
+        f = open(Data_Base.time_table, "r") # I indicate where is the file, and that I need to only read the data
+        csv_file = csv.reader(f, delimiter=",") # I use the method csv to read the data as a string and delimite the data with a comma
+        Data_Base.time_table_header = next(csv_file) # I skip the first line of the csv file (headers)
         return csv_file 
     
     @staticmethod   
